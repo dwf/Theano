@@ -690,8 +690,8 @@ class T_Scan(unittest.TestCase):
                     theano.dot(u1_t, W_in1)]
 
         outputs, updates = theano.scan(f_rnn_cmpl,
-                                       [u1, dict(input=u2, taps=[-1, 0, 1])],
-                                       [x0, dict(initial=y0, taps=[-1, -3]),
+                                       [u1, OrderedDict(input=u2, taps=[-1, 0, 1])],
+                                       [x0, OrderedDict(initial=y0, taps=[-1, -3]),
                                         None],
                                        W_in1,
                                        n_steps=None,
@@ -748,7 +748,7 @@ class T_Scan(unittest.TestCase):
         # Boulanger-Lewandowski June 6th
         x = theano.tensor.dvector()
         y, updates = theano.scan(lambda x: [x],
-                                 sequences=dict(input=x, taps=[-1]),
+                                 sequences=OrderedDict(input=x, taps=[-1]),
                                  outputs_info=[None])
         inp = numpy.arange(5).astype('float64')
         rval = theano.function([x], y, updates=updates)(inp)
@@ -773,8 +773,8 @@ class T_Scan(unittest.TestCase):
             return u_tm2 * W_in + x_tm1 * W + x_tm2
 
         outputs, updates = theano.scan(f_rnn_shared,
-                                       dict(input=u, taps=-2),
-                                       dict(initial=x0, taps=[-1, -2]),
+                                       OrderedDict(input=u, taps=-2),
+                                       OrderedDict(initial=x0, taps=[-1, -2]),
                                        [],
                                        n_steps=None,
                                        truncate_gradient=-1,
@@ -818,8 +818,8 @@ class T_Scan(unittest.TestCase):
             return (u_tm2 + u_tp2) * W_in + x_tm1 * W + x_tm2
 
         output, updates = theano.scan(f_rnn_shared,
-                                      dict(input=u, taps=[-2, 2]),
-                                      dict(initial=x0, taps=[-1, -2]),
+                                      OrderedDict(input=u, taps=[-2, 2]),
+                                      OrderedDict(initial=x0, taps=[-1, -2]),
                                       [],
                                       n_steps=None,
                                       truncate_gradient=-1,
@@ -867,8 +867,8 @@ class T_Scan(unittest.TestCase):
 
         outputs, updates = theano.scan(f_rnn_shared,
                                        [u0, u1, u2],
-                                       [dict(initial=x0, inplace=u2),
-                                        dict(initial=x1, inplace=u1)],
+                                       [OrderedDict(initial=x0, inplace=u2),
+                                        OrderedDict(initial=x1, inplace=u1)],
                                        [],
                                        n_steps=None,
                                        truncate_gradient=-1,
@@ -948,9 +948,9 @@ class T_Scan(unittest.TestCase):
 
         outputs, updates = theano.scan(f_rnn_shared,
                                        [u0,
-                                        dict(input=u1, taps=[0, 1]),
-                                        dict(input=u2, taps=[-1, 0, +1])],
-                                       [dict(initial=x0), dict(initial=x1)],
+                                        OrderedDict(input=u1, taps=[0, 1]),
+                                        OrderedDict(input=u2, taps=[-1, 0, +1])],
+                                       [OrderedDict(initial=x0), OrderedDict(initial=x1)],
                                        [],
                                        n_steps=None,
                                        truncate_gradient=-1,
@@ -1083,7 +1083,7 @@ class T_Scan(unittest.TestCase):
         y0 = theano.tensor.matrix('y0')
         outputs, updates = theano.scan(f,
                                        [u1, u2],
-                                       [dict(initial=y0, taps=[-3, -2, -1]),
+                                       [OrderedDict(initial=y0, taps=[-3, -2, -1]),
                                         y1,
                                         None],
                                        [],
@@ -1559,8 +1559,8 @@ class T_Scan(unittest.TestCase):
                     theano.dot(u1_t, W_in1)]
         cost, updates = scan_project_sum(
             f_rnn_cmpl,
-            [u1, dict(input=u2, taps=[-1, 0, 1])],
-            [x0, dict(initial=y0, taps=[-1, -3]), None],
+            [u1, OrderedDict(input=u2, taps=[-1, 0, 1])],
+            [x0, OrderedDict(initial=y0, taps=[-1, -3]), None],
             W_in1,
             n_steps=None,
             truncate_gradient=-1,
@@ -1627,8 +1627,8 @@ class T_Scan(unittest.TestCase):
                         theano.dot(x_tm1, W),
                     (y_tm1 + y_tm3) * theano.dot(x_tm1, W_out)]
         cost, updates = scan_project_sum(f_rnn_cmpl,
-                                         [u1, dict(input=u2, taps=[-1, 0, 1])],
-                                         [x0, dict(initial=y0, taps=[-1, -3])],
+                                         [u1, OrderedDict(input=u2, taps=[-1, 0, 1])],
+                                         [x0, OrderedDict(initial=y0, taps=[-1, -3])],
                                          W_in1,
                                          n_steps=None,
                                          truncate_gradient=-1,
@@ -2069,7 +2069,7 @@ class T_Scan(unittest.TestCase):
                                        [None,
                                         None,
                                         x0,
-                                        dict(initial=y0, taps=[-1, -3])],
+                                        OrderedDict(initial=y0, taps=[-1, -3])],
                                        W_in1,
                                        n_steps=None,
                                        truncate_gradient=-1,
@@ -2156,8 +2156,8 @@ class T_Scan(unittest.TestCase):
         _outputs, updates = theano.scan(f_rnn_cmpl,
                                        [u1, u2],
                                        [None,
-                                        dict(initial=x0),
-                                        dict(initial=y0, taps=[-1, -3])],
+                                        OrderedDict(initial=x0),
+                                        OrderedDict(initial=y0, taps=[-1, -3])],
                                        W_in1,
                                        n_steps=None,
                                        truncate_gradient=-1,
@@ -2295,9 +2295,9 @@ class T_Scan(unittest.TestCase):
                             [None,
                              None,
                              None,
-                             dict(initial=x10, taps=[-1, -2]),
+                             OrderedDict(initial=x10, taps=[-1, -2]),
                              x20,
-                             dict(initial=x30, taps=[-1, -2]),
+                             OrderedDict(initial=x30, taps=[-1, -2]),
                              x40],
                             n_steps=None,
                             truncate_gradient=-1,
@@ -3055,8 +3055,8 @@ class T_Scan(unittest.TestCase):
         rval, updates = theano.scan(f_rnn_cmpl,
                                     [u1, u2],
                                     [None,
-                                     dict(initial=x0),
-                                     dict(initial=y0, taps=[-1, -3])],
+                                     OrderedDict(initial=x0),
+                                     OrderedDict(initial=y0, taps=[-1, -3])],
                                     W_in1,
                                     n_steps=None,
                                     truncate_gradient=-1,
@@ -3118,7 +3118,7 @@ class T_Scan(unittest.TestCase):
     def test_savemem_opt(self):
         y0 = theano.shared(numpy.ones((2, 10)))
         [y1, y2], updates = theano.scan(lambda y: [y, y],
-                                         outputs_info=[dict(initial=y0,
+                                         outputs_info=[OrderedDict(initial=y0,
                                                             taps=[-2]), None],
                                         n_steps=5)
         rval = theano.function([], y2.sum())()
@@ -3135,7 +3135,7 @@ class T_Scan(unittest.TestCase):
         (xseq, updates) = theano.scan(
             n_steps=10,
             fn=onestep,
-            outputs_info=[dict(initial=xinit, taps=[-4, -1])],
+            outputs_info=[OrderedDict(initial=xinit, taps=[-4, -1])],
             non_sequences=w)
         loss = (xseq[-1] ** 2).sum()
         cost_fn = theano.function([xinit, w],
@@ -3379,7 +3379,7 @@ class T_Scan(unittest.TestCase):
         [X1, X2, X3], updates = theano.scan(
             rec_fn,
             U,
-            [dict(initial=x1, taps=[-1, -3]), x2, None],
+            [OrderedDict(initial=x1, taps=[-1, -3]), x2, None],
             n_steps=None,
             truncate_gradient=-1,
             go_backwards=False)
@@ -3411,7 +3411,7 @@ class T_Scan(unittest.TestCase):
         [X1, X2, X3], updates = theano.scan(
             rec_fn,
             [],
-            [dict(initial=x1, taps=[-1, -3]), x2, None],
+            [OrderedDict(initial=x1, taps=[-1, -3]), x2, None],
             W,
             n_steps=5,
             truncate_gradient=-1,

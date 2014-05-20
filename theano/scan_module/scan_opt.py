@@ -648,7 +648,7 @@ class ScanSaveMem(gof.Optimizer):
         # to be done
         assert len(node.outputs) >= c_outs
         if len(node.outputs) == c_outs:
-            global_nsteps = {'real': -1, 'sym': []}
+            global_nsteps = OrderedDict(real=-1, sym=[])
         else:
             global_nsteps = None
 

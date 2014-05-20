@@ -1291,7 +1291,7 @@ class Scan(PureOp):
             for x in consider_inps:
                 try:
                     gmp[x] = gradient.grad(cost=None,
-                                           known_grads={y: g_y}, wrt=x)
+                                           known_grads=OrderedDict(y=g_y), wrt=x)
                 except gradient.NullTypeGradError:
                     # It means the gradient is undefined (which implies
                     # is connected)
@@ -1467,12 +1467,12 @@ class Scan(PureOp):
                        get_inp_idx(self_inputs.index(x))][odx])]
             grads = gradient.grad(
                 cost=None,
-                known_grads={y: g_y},
+                known_grads=OrderedDict(y=g_y),
                 wrt=wrt,
                 consider_constant=wrt,
                 disconnected_inputs='ignore',
                 return_disconnected='None')
-            gmp = dict(zip(wrt, grads))
+            gmp = OrderedDict(zip(wrt, grads))
             rval = [gmp.get(p, None) for p in diff_inputs]
             return rval
         dC_dinps_t = [None for inp in diff_inputs]
