@@ -29,6 +29,7 @@ import theano.tensor
 from theano.tensor import TensorType
 from theano import gof
 
+from theano.compat.python2x import OrderedDict
 from theano.compile import optdb
 from theano.tensor import opt
 from theano.scan_module.scan_utils import find_up
@@ -68,7 +69,7 @@ class IfElse(PureOp):
         if as_view:
             # check destroyhandler and others to ensure that a view_map with
             # multiple inputs can work
-            view_map = {}
+            view_map = OrderedDict()
             for idx in xrange(n_outs):
                 view_map[idx] = [idx + 1]
             self.view_map = view_map
@@ -500,7 +501,7 @@ def cond_merge_ifs_true(node):
         return False
     t_ins = node.inputs[1:][:op.n_outs]
 
-    replace = {}
+    replace = OrderedDict()
     for idx, tval in enumerate(t_ins):
         if (tval.owner and isinstance(tval.owner.op, IfElse) and
             tval.owner.inputs[0] == node.inputs[0]):
@@ -524,7 +525,7 @@ def cond_merge_ifs_false(node):
         return False
     f_ins = node.inputs[1:][op.n_outs:]
 
-    replace = {}
+    replace = OrderedDict()
     for idx, fval in enumerate(f_ins):
         if (fval.owner and isinstance(fval.owner.op, IfElse) and
             fval.owner.inputs[0] == node.inputs[0]):
@@ -602,7 +603,7 @@ def cond_remove_identical(node):
     fs = node.inputs[1:][op.n_outs:]
 
     # sync outs
-    out_map = {}
+    out_map = OrderedDict()
     for idx in xrange(len(node.outputs)):
         if idx not in out_map:
             for jdx in xrange(idx + 1, len(node.outputs)):
@@ -616,7 +617,7 @@ def cond_remove_identical(node):
 
     nw_ts = []
     nw_fs = []
-    inv_map = {}
+    inv_map = OrderedDict()
     pos = 0
     for idx in xrange(len(node.outputs)):
         if idx not in out_map:

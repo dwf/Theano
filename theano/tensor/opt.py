@@ -224,7 +224,7 @@ def inplace_elemwise_optimizer_op(OP):
                         candidate_output].type:
                         continue
 
-                    inplace_pattern = dict(baseline)
+                    inplace_pattern = OrderedDict(baseline)
                     inplace_pattern[candidate_output] = candidate_input
                     try:
                         if hasattr(op.scalar_op, "make_new_inplace"):
@@ -3921,8 +3921,8 @@ def constant_folding(node):
         # The op asks not to be constant folded.
         return False
 
-    storage_map = dict([(i, [i.data]) for i in node.inputs])
-    compute_map = dict([(i, [True]) for i in node.inputs])
+    storage_map = OrderedDict((i, [i.data]) for i in node.inputs)
+    compute_map = OrderedDict((i, [True]) for i in node.inputs)
     for o in node.outputs:
         storage_map[o] = [None]
         compute_map[o] = [False]
